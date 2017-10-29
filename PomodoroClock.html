@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+ 
+<title>Pomodoro Clock</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+<audio id='buzzer' src='https://codingtutorials360.com/14244764.mp3' type='audio/mpeg'></audio>
+</head>
+<!--*******************************************************************************  -->
+<body>
+<header>Pomodoro Clock</header>
+   <div id="controller" class="container">
+   <div class="row">
+   	 <div class="col-xs-6"> 
+       <div id="breakBox" >
+            <h1 >Break Length</h1>
+            <div class="row">
+               <button id="plusBreak" style="display:inline-block;margin-right: 10px;">+</button>
+               <p id="breakTimeSet" style="color:white;display:inline-block;"></p>
+               <button id="minusBreak" style="display:inline-block;margin-right: 10px;">-</button>
+            </div>
+       </div>
+     </div>
+   
+
+     <div class="col-xs-6"> 
+       <div id="focusBox">
+          <h1>Focus Length</h1>
+          <div class="row">
+             <button id="plusfocus" style="display:inline-block ;margin: 10px;">+</button>
+             <p id="focusTimeSet" style="color:white;display:inline-block;"></p>
+             <button id="minusfocus" style="display:inline-block ;margin: 10px;">-</button>
+          </div>
+
+       </div>
+     </div> 
+
+   </div> 
+   </div>
+
+
+<!--AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
+<div class="text-center container";">
+  <h1 id="timeType" style="font-size:40px"></h1>
+  <div style="font-size:40px;color:white"><p id="timeDisplay"></p></div>
+
+  <button class="btn btn-primary" id="start" style="color:white;width:150px;height:50px;border-radius:15px">Start</button>
+  <button class="btn btn-primary" id="reset" style="color:white;width:150px;height:50px;border-radius:15px">Reset</button>
+</div>
+
+
+<div style="text-align:center">
+<h1 id='quote' style="font-size:25px;margin:100px; "></h1>
+<h2 id='person' style="font-size:25px;color:white"></h2>
+</div>
+
+
+<!--*******************************************************************************  -->
+<style>
+body{
+background-image:url('');
+background-color:black;	
+	
+}
+h1{
+	color:white;
+}
+
+header{
+text-align:center;
+font-size: 60px;
+color:white;
+}
+#controller{
+	text-align:center;
+	background-color:;
+}
+
+#breakBox{
+display:inline-block;
+
+	
+}
+
+#focusBox{
+display:inline-block;	
+}
+#focusTimeSet,#breakTimeSet{
+	font-size:25px;
+}
+
+}
+#timeDisplay{
+	margin-top:50px;
+	margin-bottom:50px;
+}
+
+</style>
+<!--*******************************************************************************  -->
+<script>
+function putQuote(){
+var quote=[
+"Change will not come if we wait for some other person or some other time. We are the ones we\'ve been waiting for. We are the change that we seek.",
+"If today were the last day of your life, would you want to do what you are about to do today?",
+"Lost time is never found again.",
+"Yesterday's the past, tomorrow's the future, but today is a gift. That\'s why it's called the present.",
+"Time is what we want most, but... what we use worst.",
+"Time is money.",
+"Those who make the worst use of their time are the first to complain of its brevity.",
+"There's never enough time to do all the nothing you want.",
+"It is named the 'Web' for good reason.",
+"How tragic it is to find that an entire lifetime is wasted in pursuit of distractions while purpose is neglected.",
+//10
+"Ordinary people think merely of spending time. Great people think of using it.",
+];
+
+var person=[
+	"-Barack Obama", "-Steve Jobs","-Benjamin Franklin","-Bil Keane","-William Penn","-Benjamin Franklin","-JEAN DE LA BRUYERE",
+    "― Bill Watterson","― David Foster Wallace","― Sunday Adelaja",  "-Author Unknown"  
+];  
+
+var i= Math.floor(Math.random()*11);
+  document.getElementById('quote').innerHTML=quote[i];
+  document.getElementById('person').innerHTML=person[i];
+};
+//*****************************************************************************************************************	 
+$(function(){
+putQuote();
+var buzzer= $('#buzzer')[0];
+
+
+
+
+var breakTime=5;
+var focusTime=25;
+var state=true;
+var breakTimeCount=breakTime*60;
+var focusTimeCount=focusTime*60;
+
+
+
+
+$('#timeType').html('Focus Time');
+$('#timeDisplay').html(clockCount(focusTimeCount) );
+$('#breakTimeSet').html(breakTime);
+$('#focusTimeSet').html(focusTime);
+
+
+$('#plusBreak').click( function plusBreak(){
+breakTime+=1;
+breakTimeCount=breakTime*60;
+state=true;
+$('#breakTimeSet').html(breakTime);
+
+clearInterval(timer);	
+$('#start').html('Start');
+$('#timeType').html('Focus Time');
+focusTimeCount=focusTime*60;
+$('#timeDisplay').html(clockCount(focusTimeCount) );
+
+
+
+});
+//*****************************************************************
+$('#minusBreak').click(function minusBreak(){
+if(breakTime>0)
+breakTime-=1;
+$('#breakTimeSet').html(breakTime);
+breakTimeCount=breakTime*60;
+
+clearInterval(timer);
+$('#start').html('Start');
+$('#timeType').html('Focus Time');
+focusTimeCount=focusTime*60;
+$('#timeDisplay').html(clockCount(focusTimeCount) );
+
+});
+//*****************************************************************
+$('#plusfocus').click(function plusfocus(){
+state=true;
+focusTime+=1;
+focusTimeCount=focusTime*60;
+$('#focusTimeSet').html(focusTime);
+$('#timeDisplay').html(clockCount(focusTimeCount) );
+
+clearInterval(timer);	
+$('#start').html('Start');
+$('#timeType').html('Focus Time');
+
+
+
+
+});
+// ****************************************************************
+$('#minusfocus').click(function minusfocus(){
+if(focusTime>0)
+focusTime-=1;
+state=true
+focusTimeCount=focusTime*60;
+$('#focusTimeSet').html(focusTime);
+$('#timeDisplay').html(clockCount(focusTimeCount) );
+
+clearInterval(timer);	
+$('#start').html('Start');
+$('#timeType').html('Focus Time');
+;
+});
+
+//*****************************************************************
+
+$('#reset').click(function reset(){
+
+     clearInterval(timer); 
+     breakTimeCount=breakTime*60;
+     focusTimeCount=focusTime*60;  
+     $('#timeDisplay').html(clockCount(focusTimeCount) );
+     state=true;
+    
+     $('#timeType').html('Focus Time');
+     $('#start').html('Start');
+
+
+   });    
+$('#start').click(function(){
+    
+ 
+  if( document.getElementById('start').textContent=='Start'){
+      $('#start').html('Pause');
+       putQuote();
+
+  
+     
+       timer=setInterval(time,1000);
+
+	function time(){ 
+      
+      if(state===true){
+       	   $('#timeType').html('Focus Time');
+       	   $('#timeDisplay').html( clockCount(focusTimeCount) );
+
+
+       	   focusTimeCount-=1;
+       	   if(focusTimeCount==0){
+       		   state=false;
+       		   focusTimeCount=focusTime*60;
+       		   buzzer.play();
+       	   }
+       }
+        else if(state===false){
+           $('#timeType').html('Break Time');
+           $('#timeDisplay').html( clockCount(breakTimeCount) );
+
+           breakTimeCount-=1;
+           if(breakTimeCount==0){
+           	  state=true;
+           	  breakTimeCount=breakTime*60;
+           	  buzzer.play();
+           }
+        }
+    } //function time
+ }//if #start is 'start'
+
+   else if( document.getElementById('start').textContent=='Pause'){
+   	   clearInterval(timer);
+   	   $('#start').html('Start');
+   }
+
+
+
+}); //start.click
+
+function clockCount(a){
+	if(a%60>=10){
+		return Math.floor(a/60)+':'+a%60;
+	}
+	else if(a%60<10){
+	return Math.floor(a/60)+':'+'0'+a%60;	
+	}
+
+}
+//***********************************************************************quote generate>
+
+
+
+
+
+
+
+});//j.s ready function
+
+
+
+</script>
+</body>
+
+
+</html>
